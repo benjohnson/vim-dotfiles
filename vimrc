@@ -59,7 +59,7 @@ set splitright                  " Split vertical windows right to the current wi
 
 " Style baby
 colorscheme base16-ocean
-set background=dark
+set background=light
 
 " Search
 set incsearch    " Shows the match while typing
@@ -113,6 +113,17 @@ nnoremap <Leader>k :NERDTreeToggle<CR>
 nnoremap <Leader>K :NERDTreeFind<CR>
 nnoremap <Leader>c :ColorHEX<CR>
 
+" Find the word under the cursor project-wide
+nnoremap <Leader>f "zyiw:tabnew<CR>:Ag <C-r>z<CR>
+
+" Tests
+nmap <silent> <leader>z :TestNearest<CR>
+nmap <silent> <leader>Z :TestFile<CR>
+nmap <silent> <leader>x :TestLast<CR>
+
+" Sort
+vnoremap <Leader>s :sort<CR>
+
 " Yank/Paste to system clipboard
 nnoremap <Leader>p "+p<CR>
 nnoremap <Leader>P "+P<CR>
@@ -122,9 +133,6 @@ vnoremap <Leader>y "+y<CR>
 
 " Y yanks from current position to end of line.
 map Y y$
-
-" Sort
-vnoremap <Leader>s :sort<CR>
 
 " Tab Commands
 nnoremap tl :tabnext<CR>
