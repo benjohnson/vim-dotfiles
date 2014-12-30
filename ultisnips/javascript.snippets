@@ -1,0 +1,45 @@
+snippet cl "console.log(...)" b
+console.log($0);
+endsnippet
+
+snippet func
+${1:initialize}: function($2){
+	$0
+}${3:,}
+endsnippet
+
+
+snippet require "require" b
+var `!p
+def formatVariableName(path):
+	lastPart = path.split('/')[-1]
+	if lastPart == 'underscore':
+		return '_'
+	elif lastPart == 'jquery':
+		return '$'
+	else:
+		return re.sub(r'[_\-]', '', lastPart.title())
+snip.rv = formatVariableName(t[1])
+` = require('${1}');$0
+endsnippet
+
+snippet define
+define(function(${0:require}){
+
+	${1}
+
+});
+endsnippet
+
+
+snippet react
+React.createClass({
+
+	render: function(){
+		return (
+			${1:<div></div>}
+		);
+	}
+
+});
+endsnippet
