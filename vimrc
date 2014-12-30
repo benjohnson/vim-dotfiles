@@ -59,7 +59,7 @@ set splitright                  " Split vertical windows right to the current wi
 
 " Style baby
 colorscheme base16-ocean
-set background=light
+set background=dark
 
 " Search
 set incsearch    " Shows the match while typing
@@ -116,10 +116,10 @@ nnoremap <Leader>c :ColorHEX<CR>
 " Find the word under the cursor project-wide
 nnoremap <Leader>f "zyiw:tabnew<CR>:Ag <C-r>z<CR>
 
-" Tests
-nmap <silent> <leader>z :TestNearest<CR>
-nmap <silent> <leader>Z :TestFile<CR>
-nmap <silent> <leader>x :TestLast<CR>
+" Run Tests
+nmap <silent> <leader>z :w<CR>:TestNearest<CR>
+nmap <silent> <leader>a :w<CR>:TestFile<CR>
+nmap <silent> <leader>x :w<CR>:TestLast<CR>
 
 " Sort
 vnoremap <Leader>s :sort<CR>
