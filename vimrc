@@ -1,4 +1,3 @@
-" System Requirements:
 " System needs Ag (The Silver Searcher) installed.
 " YouCompleteMe has a compile step.
 " Ctrlp-cmatcher has a compile step.
@@ -29,9 +28,14 @@ Plug 'iandoe/vim-osx-colorpicker', {'on': 'ColorHEX'}
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'haya14busa/incsearch.vim'
 Plug 'janko-m/vim-test'
+Plug 'Lokaltog/vim-easymotion'
 call plug#end()
 
 " SETTINGS ------------------------
+
+" Style baby
+colorscheme base16-solarized
+set background=dark
 
 " Basics
 set nocompatible
@@ -56,10 +60,6 @@ set scrolloff=3                 " Keep more context when scrolling off the end o
 set wildmenu                    " Better tab completion for Vim commands
 set splitbelow                  " Split horizontal windows below to the current windows
 set splitright                  " Split vertical windows right to the current windows
-
-" Style baby
-colorscheme base16-ocean
-set background=dark
 
 " Search
 set incsearch    " Shows the match while typing
@@ -131,9 +131,6 @@ nnoremap <Leader>o o<Esc>"+p<CR>
 nnoremap <Leader>O O<Esc>"+p<CR>
 vnoremap <Leader>y "+y<CR>
 
-" Y yanks from current position to end of line.
-map Y y$
-
 " Tab Commands
 nnoremap tl :tabnext<CR>
 nnoremap th :tabprev<CR>
@@ -144,17 +141,11 @@ nnoremap tj :tablast<CR>
 nnoremap td :tabclose<CR>
 nnoremap to :tabonly<CR>
 
-nnoremap ]a :next<CR>
-nnoremap [a :prev<CR>
-
 " Just do ctrl-j/k/l/h to move between splits
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
-
-" Repeat dot command in visual mode
-xnoremap . :normal .<CR>
 
 " Move down/up by lines on screen
 nmap j gj
@@ -224,6 +215,11 @@ let g:syntastic_aggregate_errors = 1
 
 " Emmet
 let g:user_emmet_expandabbr_key = '<c-e>'
+
+" Easymotion
+let g:EasyMotion_do_mapping = 0
+nmap s <Plug>(easymotion-s)
+omap s <Plug>(easymotion-s)
 
 " Airline
 let g:airline_left_sep = ''
