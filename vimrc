@@ -29,13 +29,14 @@ Plug 'AndrewRadev/splitjoin.vim'
 Plug 'haya14busa/incsearch.vim'
 Plug 'janko-m/vim-test'
 Plug 'Lokaltog/vim-easymotion'
+Plug 'michaeljsmith/vim-indent-object'
 call plug#end()
 
 " SETTINGS ------------------------
 
 " Style baby
 colorscheme base16-solarized
-set background=dark
+set background=light
 
 " Basics
 set nocompatible
@@ -67,9 +68,6 @@ set hlsearch     " Highlight found searches
 set ignorecase   " Search case insensitive...
 set smartcase    " ... but not when search pattern contains upper case characters
 set gdefault     " Always do global substitutions - screw /g
-
-" Press comma to turn off highlighting and clear any message already displayed.
-nnoremap <silent> , :nohlsearch<Bar>:echo<CR>
 
 " Indentation
 set tabstop=2
@@ -254,9 +252,16 @@ autocmd FileType htmldjango set commentstring={#\ %s\ #}
 let NERDTreeIgnore = ['\.pyc$']
 
 " Incremental Search
+let g:incsearch#auto_nohlsearch = 1
 map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
+map n  <Plug>(incsearch-nohl-n)
+map N  <Plug>(incsearch-nohl-N)
+map *  <Plug>(incsearch-nohl-*)
+map #  <Plug>(incsearch-nohl-#)
+map g* <Plug>(incsearch-nohl-g*)
+map g# <Plug>(incsearch-nohl-g#)
 
 " FUNCTIONS BABY ------------------------
 
