@@ -6,6 +6,7 @@
 " PLUGINS ------------------------
 
 call plug#begin('~/.vim/plugged')
+Plug 'octref/RootIgnore'
 Plug 'chriskempson/base16-vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'mxw/vim-jsx'
@@ -21,22 +22,22 @@ Plug 'Valloric/YouCompleteMe'
 Plug 'SirVer/ultisnips'
 Plug 'marijnh/tern_for_vim', {'do': 'npm install'}
 Plug 'mattn/emmet-vim'
-Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
+Plug 'scrooloose/nerdtree', {'on': ['NERDTreeToggle', 'NERDTreeFind']}
 Plug 'scrooloose/syntastic'
-Plug 'octref/RootIgnore'
 Plug 'iandoe/vim-osx-colorpicker', {'on': 'ColorHEX'}
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'haya14busa/incsearch.vim'
-Plug 'janko-m/vim-test'
+Plug 'janko-m/vim-test', {'on': ['TestNearest', 'TestFile', 'TestLast']}
 Plug 'Lokaltog/vim-easymotion'
 Plug 'michaeljsmith/vim-indent-object'
+Plug 'christoomey/vim-sort-motion'
 call plug#end()
 
 " SETTINGS ------------------------
 
 " Style baby
-colorscheme base16-solarized
-set background=light
+colorscheme base16-ocean
+set background=dark
 
 " Basics
 set nocompatible
@@ -153,8 +154,9 @@ nmap k gk
 command! SaveSession :mks! ~/.vim/sessions/default.vim
 command! OpenSession :source ~/.vim/sessions/default.vim
 
-" Just save if I do :W because fingers.
+" Just save me from fat fingers
 command! W w
+command! Qall qall
 
 " Coding Notes
 fun! CloseCodingNotes()
@@ -176,7 +178,7 @@ autocmd BufNewFile,BufRead *.hbs set filetype=html.handlebars syntax=mustache
 autocmd BufReadPost,BufNewFile *_test.js set filetype=jasmine.javascript syntax=jasmine
 
 " Show a line at 105 chars in Python/JS/HTML
-autocmd FileType python,html,htmldjango,javascript set colorcolumn=105
+autocmd FileType python,html,htmldjango,javascript set colorcolumn=80 "105
 
 " PLUGINS ----------------------------------------
 
