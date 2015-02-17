@@ -6,13 +6,14 @@
 " PLUGINS ------------------------
 
 call plug#begin('~/.vim/plugged')
+Plug 'sjl/vitality.vim'
 Plug 'octref/RootIgnore'
 Plug 'chriskempson/base16-vim'
+Plug 'rking/ag.vim', {'on': 'Ag'}
+Plug 'kien/ctrlp.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'mxw/vim-jsx'
 Plug 'vim-scripts/django.vim', {'for': 'htmldjango'}
-Plug 'rking/ag.vim', {'on': 'Ag'}
-Plug 'kien/ctrlp.vim'
 Plug 'JazzCore/ctrlp-cmatcher', {'do': './install.sh'}
 Plug 'bling/vim-airline'
 Plug 'airblade/vim-gitgutter'
@@ -30,7 +31,6 @@ Plug 'haya14busa/incsearch.vim'
 Plug 'janko-m/vim-test', {'on': ['TestNearest', 'TestFile', 'TestLast']}
 Plug 'Lokaltog/vim-easymotion'
 Plug 'michaeljsmith/vim-indent-object'
-Plug 'christoomey/vim-sort-motion'
 call plug#end()
 
 " SETTINGS ------------------------
@@ -108,8 +108,8 @@ let mapleader = "\<Space>"
 nnoremap <Leader><Leader> :w<CR>
 nnoremap <Leader>v :tabe ~/.vim/vimrc<CR>
 nnoremap <Leader>b :CtrlPBuffer<CR>
-nnoremap <Leader>k :NERDTreeToggle<CR>
-nnoremap <Leader>K :NERDTreeFind<CR>
+nnoremap <Leader>k :NERDTreeFind<CR>
+nnoremap <Leader>K :NERDTreeToggle<CR>
 nnoremap <Leader>c :ColorHEX<CR>
 
 " Find the word under the cursor project-wide
@@ -119,9 +119,6 @@ nnoremap <Leader>f "zyiw:tabnew<CR>:Ag <C-r>z<CR>
 nmap <silent> <leader>z :w<CR>:TestNearest<CR>
 nmap <silent> <leader>a :w<CR>:TestFile<CR>
 nmap <silent> <leader>x :w<CR>:TestLast<CR>
-
-" Sort
-vnoremap <Leader>s :sort<CR>
 
 " Yank/Paste to system clipboard
 nnoremap <Leader>p "+p<CR>
@@ -154,7 +151,13 @@ nmap k gk
 command! SaveSession :mks! ~/.vim/sessions/default.vim
 command! OpenSession :source ~/.vim/sessions/default.vim
 
-" Just save me from fat fingers
+" Format JS file with ESFormatter
+command! JS :%! esformatter
+
+" Wrap buffer in an AMD module
+command! Module :normal ggiggidefine(function(require) {>GGo});gg
+
+" Save me from fat fingers
 command! W w
 command! Qall qall
 
@@ -166,7 +169,7 @@ endfun
 autocmd BufWritePost ~/Dropbox/Library/coding-notes.txt call CloseCodingNotes()
 map <Leader>n :80vsp ~/Dropbox/Library/coding-notes.txt<CR>
 
-" FORMAT SPECIFIC STUFF ------------------------
+" FORMATTING ---------------------------------------------
 
 " Django Syntax for Html Templates
 autocmd BufNewFile,BufRead *.html set filetype=htmldjango
@@ -230,18 +233,16 @@ set laststatus=2
 let g:javascript_enable_domhtmlcss = 1
 
 " CTags
-:set tags=./tags
+set tags=./tags
 
 " Colorpicker
 let g:colorpicker_app = 'iTerm.app'
 
 " CtrlP
-let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:15'
+let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:20'
 let g:ctrlp_switch_buffer = 'et'
 let g:ctrlp_max_files = 0
 let g:ctrlp_use_caching = 0
-let g:ctrlp_cache_dir = $HOME . '/.vim/.ctrlp'
-let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
 if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
@@ -269,15 +270,6 @@ map g# <Plug>(incsearch-nohl-g#)
 
 " Autoreload vimrc
 autocmd! bufwritepost ~/.vim/vimrc source %
-
-" Insert mode cursor in Terminal Vim
-if exists('$TMUX')
-  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
- let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-else
-  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-endif
 
 " Remove trailing whitespace
 fun! StripTrailingWhitespace()

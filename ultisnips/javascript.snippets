@@ -2,6 +2,33 @@ snippet cl "console.log(...)" b
 console.log($0);
 endsnippet
 
+
+
+snippet ru
+var _ = require('underscore');
+endsnippet
+
+snippet rb
+var Backbone = require('backbone');
+endsnippet
+
+snippet rbl
+var Backbone = require('makers/libs/backbone-relational');
+endsnippet
+
+snippet rq
+var `!p
+module = t[2]
+parts = module.split('_')
+parts = [part.title() for part in parts]
+snip.rv = ''.join(parts)
+` = require('makers/poetrymaker/${1}/${2}');
+endsnippet
+
+
+
+
+
 snippet func
 ${1:initialize}: function($2){
 	$0
@@ -9,7 +36,7 @@ ${1:initialize}: function($2){
 endsnippet
 
 
-snippet require "require" b
+snippet require "req" b
 var `!p
 def formatVariableName(path):
 	lastPart = path.split('/')[-1]
