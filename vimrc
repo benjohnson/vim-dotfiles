@@ -6,7 +6,6 @@
 " PLUGINS ------------------------
 
 call plug#begin('~/.vim/plugged')
-Plug 'sjl/vitality.vim'
 Plug 'octref/RootIgnore'
 Plug 'chriskempson/base16-vim'
 Plug 'rking/ag.vim', {'on': 'Ag'}
@@ -137,6 +136,9 @@ nnoremap tj :tablast<CR>
 nnoremap td :tabclose<CR>
 nnoremap to :tabonly<CR>
 
+" Normal mode with jj
+inoremap jj <ESC>
+
 " Just do ctrl-j/k/l/h to move between splits
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -180,8 +182,12 @@ autocmd BufNewFile,BufRead *.hbs set filetype=html.handlebars syntax=mustache
 " Jasmine for tests
 autocmd BufReadPost,BufNewFile *_test.js set filetype=jasmine.javascript syntax=jasmine
 
-" Show a line at 105 chars in Python/JS/HTML
+" Show a line at 80 and then 105 chars in Python/JS/HTML
 autocmd FileType python,html,htmldjango,javascript set colorcolumn=80 "105
+
+" Show insert mode cusor in iTerm2
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 " PLUGINS ----------------------------------------
 
@@ -290,4 +296,15 @@ function! QuickfixFilenames()
     let buffer_numbers[quickfix_item['bufnr']] = bufname(quickfix_item['bufnr'])
   endfor
   return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
+endfunction
+
+" Rename a file
+function! RenameFile()
+  let old_name = expand('%')
+  let new_name = input('New file name: ', expand('%'), 'file')
+  if new_name != '' && new_name != old_name
+    exec ':saveas ' . new_name
+    exec ':silent !rm ' . old_name
+    redraw!
+  endif
 endfunction
