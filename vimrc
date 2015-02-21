@@ -6,30 +6,40 @@
 " PLUGINS ------------------------
 
 call plug#begin('~/.vim/plugged')
-Plug 'octref/RootIgnore'
+" Misc
 Plug 'chriskempson/base16-vim'
-Plug 'rking/ag.vim', {'on': 'Ag'}
-Plug 'kien/ctrlp.vim'
-Plug 'sheerun/vim-polyglot'
-Plug 'mxw/vim-jsx'
-Plug 'vim-scripts/django.vim', {'for': 'htmldjango'}
-Plug 'JazzCore/ctrlp-cmatcher', {'do': './install.sh'}
+Plug 'octref/RootIgnore'
 Plug 'bling/vim-airline'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-commentary'
+Plug 'mattn/emmet-vim'
+Plug 'scrooloose/syntastic'
+Plug 'iandoe/vim-osx-colorpicker', {'on': 'ColorHEX'}
+Plug 'janko-m/vim-test', {'on': ['TestNearest', 'TestFile', 'TestLast']}
+
+" Search & File Management
+Plug 'rking/ag.vim', {'on': 'Ag'}
+Plug 'kien/ctrlp.vim'
+Plug 'JazzCore/ctrlp-cmatcher', {'do': './install.sh'}
+Plug 'scrooloose/nerdtree', {'on': ['NERDTreeToggle', 'NERDTreeFind']}
+Plug 'haya14busa/incsearch.vim'
+
+" Languages
+Plug 'sheerun/vim-polyglot'
+Plug 'mxw/vim-jsx'
+Plug 'vim-scripts/django.vim', {'for': 'htmldjango'}
+Plug 'marijnh/tern_for_vim', {'do': 'npm install'}
+
+" Autocomplete & Snippets
 Plug 'ervandew/supertab'
 Plug 'Valloric/YouCompleteMe'
 Plug 'SirVer/ultisnips'
-Plug 'marijnh/tern_for_vim', {'do': 'npm install'}
-Plug 'mattn/emmet-vim'
-Plug 'scrooloose/nerdtree', {'on': ['NERDTreeToggle', 'NERDTreeFind']}
-Plug 'scrooloose/syntastic'
-Plug 'iandoe/vim-osx-colorpicker', {'on': 'ColorHEX'}
+
+" Motions
 Plug 'AndrewRadev/splitjoin.vim'
-Plug 'haya14busa/incsearch.vim'
-Plug 'janko-m/vim-test', {'on': ['TestNearest', 'TestFile', 'TestLast']}
 Plug 'Lokaltog/vim-easymotion'
 Plug 'michaeljsmith/vim-indent-object'
+Plug 'tommcdo/vim-exchange'
 call plug#end()
 
 " SETTINGS ------------------------
@@ -136,8 +146,11 @@ nnoremap tj :tablast<CR>
 nnoremap td :tabclose<CR>
 nnoremap to :tabonly<CR>
 
-" Normal mode with jj
-inoremap jj <ESC>
+" Normal mode with jk
+inoremap jk <ESC>
+
+" Repeat dot command in visual mode
+vnoremap . :normal .<CR>
 
 " Just do ctrl-j/k/l/h to move between splits
 nnoremap <C-J> <C-W><C-J>
@@ -153,15 +166,16 @@ nmap k gk
 command! SaveSession :mks! ~/.vim/sessions/default.vim
 command! OpenSession :source ~/.vim/sessions/default.vim
 
+" Save me from fat fingers
+command! W w
+cabbrev Qall qall
+cabbrev ag Ag
+
 " Format JS file with ESFormatter
 command! JS :%! esformatter
 
 " Wrap buffer in an AMD module
 command! Module :normal ggiggidefine(function(require) {>GGo});gg
-
-" Save me from fat fingers
-command! W w
-command! Qall qall
 
 " Coding Notes
 fun! CloseCodingNotes()
