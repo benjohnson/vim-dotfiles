@@ -6,16 +6,15 @@
 " PLUGINS ------------------------
 
 call plug#begin('~/.vim/plugged')
-" Misc
-Plug 'chriskempson/base16-vim'
+" System
 Plug 'octref/RootIgnore'
 Plug 'bling/vim-airline'
 Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-commentary'
-Plug 'mattn/emmet-vim'
-Plug 'scrooloose/syntastic'
-Plug 'iandoe/vim-osx-colorpicker', {'on': 'ColorHEX'}
 Plug 'janko-m/vim-test', {'on': ['TestNearest', 'TestFile', 'TestLast']}
+Plug 'ConradIrwin/vim-bracketed-paste'
+
+" Syntax Colors
+Plug 'chriskempson/base16-vim'
 
 " Search & File Management
 Plug 'rking/ag.vim', {'on': 'Ag'}
@@ -24,11 +23,14 @@ Plug 'JazzCore/ctrlp-cmatcher', {'do': './install.sh'}
 Plug 'scrooloose/nerdtree', {'on': ['NERDTreeToggle', 'NERDTreeFind']}
 Plug 'haya14busa/incsearch.vim'
 
-" Languages
+" Languages & Syntax
+Plug 'scrooloose/syntastic'
 Plug 'sheerun/vim-polyglot'
 Plug 'mxw/vim-jsx'
 Plug 'vim-scripts/django.vim', {'for': 'htmldjango'}
 Plug 'marijnh/tern_for_vim', {'do': 'npm install'}
+Plug 'mattn/emmet-vim'
+Plug 'iandoe/vim-osx-colorpicker', {'on': 'ColorHEX'}
 
 " Autocomplete & Snippets
 Plug 'ervandew/supertab'
@@ -36,6 +38,7 @@ Plug 'Valloric/YouCompleteMe'
 Plug 'SirVer/ultisnips'
 
 " Motions
+Plug 'tpope/vim-commentary'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'michaeljsmith/vim-indent-object'
@@ -71,6 +74,7 @@ set scrolloff=3                 " Keep more context when scrolling off the end o
 set wildmenu                    " Better tab completion for Vim commands
 set splitbelow                  " Split horizontal windows below to the current windows
 set splitright                  " Split vertical windows right to the current windows
+set nomore                      " Don't display --MORE--
 
 " Search
 set incsearch    " Shows the match while typing
@@ -116,6 +120,7 @@ let mapleader = "\<Space>"
 
 nnoremap <Leader><Leader> :w<CR>
 nnoremap <Leader>v :tabe ~/.vim/vimrc<CR>
+nnoremap <Leader>D :tabe ~/src/storybird/storybird/settings/_development.py<CR>
 nnoremap <Leader>b :CtrlPBuffer<CR>
 nnoremap <Leader>k :NERDTreeFind<CR>
 nnoremap <Leader>K :NERDTreeToggle<CR>
@@ -150,7 +155,7 @@ nnoremap to :tabonly<CR>
 inoremap jk <ESC>
 
 " Repeat dot command in visual mode
-vnoremap . :normal .<CR>
+xnoremap . :normal .<CR>
 
 " Just do ctrl-j/k/l/h to move between splits
 nnoremap <C-J> <C-W><C-J>
@@ -170,6 +175,7 @@ command! OpenSession :source ~/.vim/sessions/default.vim
 command! W w
 cabbrev Qall qall
 cabbrev ag Ag
+cabbrev tmove tabmove
 
 " Format JS file with ESFormatter
 command! JS :%! esformatter
