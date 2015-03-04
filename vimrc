@@ -11,7 +11,6 @@ Plug 'octref/RootIgnore'
 Plug 'bling/vim-airline'
 Plug 'airblade/vim-gitgutter'
 Plug 'janko-m/vim-test', {'on': ['TestNearest', 'TestFile', 'TestLast']}
-Plug 'ConradIrwin/vim-bracketed-paste'
 
 " Syntax Colors
 Plug 'chriskempson/base16-vim'
@@ -43,6 +42,7 @@ Plug 'AndrewRadev/splitjoin.vim'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'tommcdo/vim-exchange'
+Plug 'tpope/vim-surround'
 call plug#end()
 
 " SETTINGS ------------------------
@@ -213,7 +213,8 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 " Test
 let g:test#python#runner = 'django'
-let g:test#runners = {'Python': ['Django']}
+let g:test#javascript#runner = 'karma'
+let g:test#runners = {'Python': ['Django'], 'Javascript': ['Karma']}
 
 " Syntax
 let g:jsx_ext_required = 0
