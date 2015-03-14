@@ -23,10 +23,10 @@ Plug 'scrooloose/nerdtree', {'on': ['NERDTreeToggle', 'NERDTreeFind']}
 Plug 'haya14busa/incsearch.vim'
 
 " Languages & Syntax
+Plug '~/.vim/django-custom'
 Plug 'scrooloose/syntastic'
 Plug 'sheerun/vim-polyglot'
 Plug 'mxw/vim-jsx'
-Plug 'vim-scripts/django.vim', {'for': 'htmldjango'}
 Plug 'marijnh/tern_for_vim', {'do': 'npm install'}
 Plug 'mattn/emmet-vim'
 Plug 'iandoe/vim-osx-colorpicker', {'on': 'ColorHEX'}
@@ -205,9 +205,14 @@ autocmd BufReadPost,BufNewFile *_test.js set filetype=jasmine.javascript syntax=
 " Show a line at 80 and then 105 chars in Python/JS/HTML
 autocmd FileType python,html,htmldjango,javascript set colorcolumn=80 "105
 
-" Show insert mode cusor in iTerm2
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+" Show insert mode cusor in iTerm2 and Tmux
+if exists('$TMUX')
+  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+else
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
 
 " PLUGINS ----------------------------------------
 
@@ -252,9 +257,21 @@ nmap s <Plug>(easymotion-s)
 omap s <Plug>(easymotion-s)
 
 " Airline
+set laststatus=2
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
-set laststatus=2
+let g:airline_section_b = ''
+let g:airline_section_x = airline#section#create(['filetype'])
+let g:airline_section_y = ''
+let g:airline_section_z = ''
+let g:airline#extensions#ctrlp#show_adjacent_modes = 0
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_buffers = 0
+let g:airline#extensions#tabline#show_tab_nr = 0
+let g:airline#extensions#tabline#show_tab_type = 0
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+let g:airline#extensions#tabline#tab_min_count = 1
+let g:airline#extensions#tabline#show_close_button = 0
 
 " Javascript
 let g:javascript_enable_domhtmlcss = 1
