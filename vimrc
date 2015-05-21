@@ -8,8 +8,8 @@
 call plug#begin('~/.vim/plugged')
 " System
 Plug 'octref/RootIgnore'
-Plug 'bling/vim-airline'
 Plug 'airblade/vim-gitgutter'
+Plug 'bling/vim-airline'
 Plug 'janko-m/vim-test', {'on': ['TestNearest', 'TestFile', 'TestLast']}
 
 " Syntax Colors
@@ -19,7 +19,7 @@ Plug 'chriskempson/base16-vim'
 Plug 'rking/ag.vim', {'on': 'Ag'}
 Plug 'kien/ctrlp.vim'
 Plug 'JazzCore/ctrlp-cmatcher', {'do': './install.sh'}
-Plug 'scrooloose/nerdtree', {'on': ['NERDTreeToggle', 'NERDTreeFind']}
+Plug 'scrooloose/nerdtree'
 Plug 'haya14busa/incsearch.vim'
 
 " Languages & Syntax
@@ -142,20 +142,37 @@ nnoremap <Leader>O O<Esc>"+p<CR>
 vnoremap <Leader>y "+y<CR>
 
 " Tab Commands
-nnoremap tl :tabnext<CR>
-nnoremap th :tabprev<CR>
+nnoremap tl :w<CR>:tabnext<CR>
+nnoremap th :w<CR>:tabprev<CR>
 nnoremap tn :tabnew<CR>:CtrlP<CR>
 nnoremap tf :tabnew<CR>:Ag "
 nnoremap tk :tabfirst<CR>
 nnoremap tj :tablast<CR>
 nnoremap td :tabclose<CR>
 nnoremap to :tabonly<CR>
+nnoremap <Up> <NOP>
+nnoremap <Down> <NOP>
+nnoremap <Left> :w<CR>:tabprev<CR>
+nnoremap <Right> :w<CR>:tabnext<CR>
+nnoremap <Leader>1 1gt
+nnoremap <Leader>2 2gt
+nnoremap <Leader>3 3gt
+nnoremap <Leader>4 4gt
+nnoremap <Leader>5 5gt
+nnoremap <Leader>6 6gt
+nnoremap <Leader>7 7gt
+nnoremap <Leader>8 8gt
+nnoremap <Leader>9 9gt
 
 " Normal mode with jk
 inoremap jk <ESC>
+inoremap kj <ESC>
 
 " Repeat dot command in visual mode
 xnoremap . :normal .<CR>
+
+" Sort
+vnoremap <Leader>s :sort<CR>
 
 " Just do ctrl-j/k/l/h to move between splits
 nnoremap <C-J> <C-W><C-J>
@@ -170,6 +187,8 @@ nmap k gk
 " Open and save sessions
 command! SaveSession :mks! ~/.vim/sessions/default.vim
 command! OpenSession :source ~/.vim/sessions/default.vim
+
+command! Oscar :e ~/.virtualenvs/storybird/lib/python2.7/site-packages/oscar/
 
 " Save me from fat fingers
 command! W w
@@ -267,7 +286,7 @@ let g:airline_section_z = ''
 let g:airline#extensions#ctrlp#show_adjacent_modes = 0
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 0
-let g:airline#extensions#tabline#show_tab_nr = 0
+let g:airline#extensions#tabline#show_tab_nr = 1
 let g:airline#extensions#tabline#show_tab_type = 0
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline#extensions#tabline#tab_min_count = 1
