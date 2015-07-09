@@ -37,19 +37,18 @@ Plug 'Valloric/YouCompleteMe'
 Plug 'SirVer/ultisnips'
 
 " Motions
-Plug 'tpope/vim-commentary'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'michaeljsmith/vim-indent-object'
-Plug 'tommcdo/vim-exchange'
+Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 call plug#end()
 
 " SETTINGS ------------------------
 
 " Style baby
-colorscheme base16-ocean
-set background=dark
+colorscheme base16-bright
+set background=light
 
 " Basics
 set nocompatible
@@ -142,8 +141,8 @@ nnoremap <Leader>O O<Esc>"+p<CR>
 vnoremap <Leader>y "+y<CR>
 
 " Tab Commands
-nnoremap tl :w<CR>:tabnext<CR>
-nnoremap th :w<CR>:tabprev<CR>
+nnoremap tl :tabnext<CR>
+nnoremap th :tabprev<CR>
 nnoremap tn :tabnew<CR>:CtrlP<CR>
 nnoremap tf :tabnew<CR>:Ag "
 nnoremap tk :tabfirst<CR>
@@ -152,8 +151,8 @@ nnoremap td :tabclose<CR>
 nnoremap to :tabonly<CR>
 nnoremap <Up> <NOP>
 nnoremap <Down> <NOP>
-nnoremap <Left> :w<CR>:tabprev<CR>
-nnoremap <Right> :w<CR>:tabnext<CR>
+nnoremap <Left> :tabprev<CR>
+nnoremap <Right> :tabnext<CR>
 nnoremap <Leader>1 1gt
 nnoremap <Leader>2 2gt
 nnoremap <Leader>3 3gt
@@ -163,6 +162,9 @@ nnoremap <Leader>6 6gt
 nnoremap <Leader>7 7gt
 nnoremap <Leader>8 8gt
 nnoremap <Leader>9 9gt
+
+" Expand a docstring
+nnoremap <Leader>d 0f"llaf"i
 
 " Normal mode with jk
 inoremap jk <ESC>
@@ -284,13 +286,15 @@ let g:airline_section_x = airline#section#create(['filetype'])
 let g:airline_section_y = ''
 let g:airline_section_z = ''
 let g:airline#extensions#ctrlp#show_adjacent_modes = 0
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#show_buffers = 0
-let g:airline#extensions#tabline#show_tab_nr = 1
-let g:airline#extensions#tabline#show_tab_type = 0
-let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-let g:airline#extensions#tabline#tab_min_count = 1
-let g:airline#extensions#tabline#show_close_button = 0
+" let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#show_buffers = 0
+" let g:airline#extensions#tabline#show_tabs = 0
+" let g:airline#extensions#tabline#show_tab_nr = 1
+" let g:airline#extensions#tabline#tab_nr_type = 1
+" let g:airline#extensions#tabline#show_tab_type = 0
+" let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+" let g:airline#extensions#tabline#tab_min_count = 1
+" let g:airline#extensions#tabline#show_close_button = 0
 
 " Javascript
 let g:javascript_enable_domhtmlcss = 1
