@@ -60,13 +60,14 @@ endsnippet
 
 
 snippet react
-React.createClass({
+var React = require('react');
 
-	render: function(){
+var ${1} = React.createClass({
+	render: function() {
 		return (
-			${1:<div></div>}
 		);
 	}
-
 });
+
+module.exports = ${1};
 endsnippet

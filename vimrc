@@ -11,6 +11,7 @@ Plug 'octref/RootIgnore'
 Plug 'airblade/vim-gitgutter'
 Plug 'bling/vim-airline'
 Plug 'janko-m/vim-test', {'on': ['TestNearest', 'TestFile', 'TestLast']}
+Plug 'junegunn/goyo.vim'
 
 " Syntax Colors
 Plug 'chriskempson/base16-vim'
@@ -23,9 +24,9 @@ Plug 'scrooloose/nerdtree'
 Plug 'haya14busa/incsearch.vim'
 
 " Languages & Syntax
+" Plug 'sheerun/vim-polyglot'
 Plug '~/.vim/django-custom'
 Plug 'scrooloose/syntastic'
-Plug 'sheerun/vim-polyglot'
 Plug 'mxw/vim-jsx'
 Plug 'marijnh/tern_for_vim', {'do': 'npm install'}
 Plug 'mattn/emmet-vim'
@@ -42,13 +43,14 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
 call plug#end()
 
 " SETTINGS ------------------------
 
 " Style baby
-colorscheme base16-bright
-set background=light
+colorscheme base16-monokai
+set background=dark
 
 " Basics
 set nocompatible
@@ -121,6 +123,7 @@ nnoremap <Leader><Leader> :w<CR>
 nnoremap <Leader>v :tabe ~/.vim/vimrc<CR>
 nnoremap <Leader>D :tabe ~/src/storybird/storybird/settings/_development.py<CR>
 nnoremap <Leader>b :CtrlPBuffer<CR>
+nnoremap <C-;> :CtrlPBuffer<CR>
 nnoremap <Leader>k :NERDTreeFind<CR>
 nnoremap <Leader>K :NERDTreeToggle<CR>
 nnoremap <Leader>c :ColorHEX<CR>
