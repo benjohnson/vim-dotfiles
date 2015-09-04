@@ -1,20 +1,22 @@
-" System needs Ag (The Silver Searcher) installed.
-" YouCompleteMe has a compile step.
-" Ctrlp-cmatcher has a compile step.
-" Tern needs npm install to be run in bundle directory.
+" YouCompleteMe has a manual compile step.
 
 " PLUGINS ------------------------
 
 call plug#begin('~/.vim/plugged')
 " System
+Plug 'tpope/vim-repeat'
 Plug 'octref/RootIgnore'
 Plug 'airblade/vim-gitgutter'
 Plug 'bling/vim-airline'
 Plug 'janko-m/vim-test', {'on': ['TestNearest', 'TestFile', 'TestLast']}
 Plug 'junegunn/goyo.vim'
+Plug 'rizzatti/dash.vim'
 
 " Syntax Colors
 Plug 'chriskempson/base16-vim'
+Plug 'hhff/SpacegrayEighties.vim'
+Plug 'geoffharcourt/one-dark.vim'
+Plug 'NLKNguyen/papercolor-theme'
 
 " Search & File Management
 Plug 'rking/ag.vim', {'on': 'Ag'}
@@ -24,13 +26,14 @@ Plug 'scrooloose/nerdtree'
 Plug 'haya14busa/incsearch.vim'
 
 " Languages & Syntax
-" Plug 'sheerun/vim-polyglot'
+Plug 'sheerun/vim-polyglot'
 Plug '~/.vim/django-custom'
-Plug 'scrooloose/syntastic'
 Plug 'mxw/vim-jsx'
+Plug 'scrooloose/syntastic'
 Plug 'marijnh/tern_for_vim', {'do': 'npm install'}
 Plug 'mattn/emmet-vim'
 Plug 'iandoe/vim-osx-colorpicker', {'on': 'ColorHEX'}
+Plug 'fisadev/vim-isort'
 
 " Autocomplete & Snippets
 Plug 'ervandew/supertab'
@@ -39,18 +42,15 @@ Plug 'SirVer/ultisnips'
 
 " Motions
 Plug 'AndrewRadev/splitjoin.vim'
-Plug 'Lokaltog/vim-easymotion'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat'
+Plug 'AndrewRadev/sideways.vim'
 call plug#end()
 
 " SETTINGS ------------------------
 
 " Style baby
-colorscheme base16-monokai
-set background=dark
 
 " Basics
 set nocompatible
@@ -124,8 +124,7 @@ nnoremap <Leader>v :tabe ~/.vim/vimrc<CR>
 nnoremap <Leader>D :tabe ~/src/storybird/storybird/settings/_development.py<CR>
 nnoremap <Leader>b :CtrlPBuffer<CR>
 nnoremap <C-;> :CtrlPBuffer<CR>
-nnoremap <Leader>k :NERDTreeFind<CR>
-nnoremap <Leader>K :NERDTreeToggle<CR>
+nnoremap <Leader>k :call ToggleNERDTreeFind()<CR>
 nnoremap <Leader>c :ColorHEX<CR>
 
 " Find the word under the cursor project-wide
@@ -133,7 +132,6 @@ nnoremap <Leader>f "zyiw:tabnew<CR>:Ag <C-r>z<CR>
 
 " Run Tests
 nmap <silent> <leader>z :w<CR>:TestNearest<CR>
-nmap <silent> <leader>a :w<CR>:TestFile<CR>
 nmap <silent> <leader>x :w<CR>:TestLast<CR>
 
 " Yank/Paste to system clipboard
@@ -142,6 +140,10 @@ nnoremap <Leader>P "+P<CR>
 nnoremap <Leader>o o<Esc>"+p<CR>
 nnoremap <Leader>O O<Esc>"+p<CR>
 vnoremap <Leader>y "+y<CR>
+
+" Sideways
+nnoremap <Leader><Left> :SidewaysLeft<CR>
+nnoremap <Leader><Right> :SidewaysRight<CR>
 
 " Tab Commands
 nnoremap tl :tabnext<CR>
@@ -156,18 +158,6 @@ nnoremap <Up> <NOP>
 nnoremap <Down> <NOP>
 nnoremap <Left> :tabprev<CR>
 nnoremap <Right> :tabnext<CR>
-nnoremap <Leader>1 1gt
-nnoremap <Leader>2 2gt
-nnoremap <Leader>3 3gt
-nnoremap <Leader>4 4gt
-nnoremap <Leader>5 5gt
-nnoremap <Leader>6 6gt
-nnoremap <Leader>7 7gt
-nnoremap <Leader>8 8gt
-nnoremap <Leader>9 9gt
-
-" Expand a docstring
-nnoremap <Leader>d 0f"llaf"i
 
 " Normal mode with jk
 inoremap jk <ESC>
@@ -175,9 +165,6 @@ inoremap kj <ESC>
 
 " Repeat dot command in visual mode
 xnoremap . :normal .<CR>
-
-" Sort
-vnoremap <Leader>s :sort<CR>
 
 " Just do ctrl-j/k/l/h to move between splits
 nnoremap <C-J> <C-W><C-J>
@@ -192,8 +179,6 @@ nmap k gk
 " Open and save sessions
 command! SaveSession :mks! ~/.vim/sessions/default.vim
 command! OpenSession :source ~/.vim/sessions/default.vim
-
-command! Oscar :e ~/.virtualenvs/storybird/lib/python2.7/site-packages/oscar/
 
 " Save me from fat fingers
 command! W w
@@ -212,8 +197,8 @@ fun! CloseCodingNotes()
   :bd
 endfun
 " On save, close the coding notes file.
-autocmd BufWritePost ~/Dropbox/Library/coding-notes.txt call CloseCodingNotes()
-map <Leader>n :80vsp ~/Dropbox/Library/coding-notes.txt<CR>
+autocmd BufWritePost ~/Dropbox\ (Personal)/Library/coding-notes.txt call CloseCodingNotes()
+map <Leader>n :80vsp ~/Dropbox\ (Personal)/Library/coding-notes.txt<CR>
 
 " FORMATTING ---------------------------------------------
 
@@ -227,9 +212,9 @@ autocmd BufNewFile,BufRead *.hbs set filetype=html.handlebars syntax=mustache
 autocmd BufReadPost,BufNewFile *_test.js set filetype=jasmine.javascript syntax=jasmine
 
 " Show a line at 80 and then 105 chars in Python/JS/HTML
-autocmd FileType python,html,htmldjango,javascript set colorcolumn=80 "105
+autocmd FileType python,html,htmldjango,javascript set colorcolumn=100 "105
 
-" Show insert mode cusor in iTerm2 and Tmux
+" Show insert mode cursor in iTerm2 and Tmux
 if exists('$TMUX')
   let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
   let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
@@ -240,13 +225,9 @@ endif
 
 " PLUGINS ----------------------------------------
 
-" Test
-let g:test#python#runner = 'django'
-let g:test#javascript#runner = 'karma'
-let g:test#runners = {'Python': ['Django'], 'Javascript': ['Karma']}
-
 " Syntax
 let g:jsx_ext_required = 0
+let python_highlight_all = 1
 
 " YouCompleteMe and UltiSnips compatibility, with the help of supertab
 " http://stackoverflow.com/a/22253548/1626737
@@ -282,28 +263,13 @@ omap s <Plug>(easymotion-s)
 
 " Airline
 set laststatus=2
+let g:airline_section_x = airline#section#create(['filetype'])
+let g:airline#extensions#ctrlp#show_adjacent_modes = 0
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
 let g:airline_section_b = ''
-let g:airline_section_x = airline#section#create(['filetype'])
 let g:airline_section_y = ''
 let g:airline_section_z = ''
-let g:airline#extensions#ctrlp#show_adjacent_modes = 0
-" let g:airline#extensions#tabline#enabled = 1
-" let g:airline#extensions#tabline#show_buffers = 0
-" let g:airline#extensions#tabline#show_tabs = 0
-" let g:airline#extensions#tabline#show_tab_nr = 1
-" let g:airline#extensions#tabline#tab_nr_type = 1
-" let g:airline#extensions#tabline#show_tab_type = 0
-" let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-" let g:airline#extensions#tabline#tab_min_count = 1
-" let g:airline#extensions#tabline#show_close_button = 0
-
-" Javascript
-let g:javascript_enable_domhtmlcss = 1
-
-" CTags
-set tags=./tags
 
 " Colorpicker
 let g:colorpicker_app = 'iTerm.app'
@@ -362,13 +328,11 @@ function! QuickfixFilenames()
   return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
 endfunction
 
-" Rename a file
-function! RenameFile()
-  let old_name = expand('%')
-  let new_name = input('New file name: ', expand('%'), 'file')
-  if new_name != '' && new_name != old_name
-    exec ':saveas ' . new_name
-    exec ':silent !rm ' . old_name
-    redraw!
+" Toggle NerdTree
+function! ToggleNERDTreeFind()
+  if g:NERDTree.IsOpen()
+    execute ':NERDTreeClose'
+  else
+    execute ':NERDTreeFind'
   endif
 endfunction
