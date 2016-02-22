@@ -13,16 +13,15 @@ Plug 'junegunn/goyo.vim'
 Plug 'rizzatti/dash.vim'
 
 " Syntax Colors
-Plug 'chriskempson/base16-vim'
 Plug 'hhff/SpacegrayEighties.vim'
 Plug 'geoffharcourt/one-dark.vim'
 Plug 'NLKNguyen/papercolor-theme'
 
 " Search & File Management
 Plug 'rking/ag.vim', {'on': 'Ag'}
-Plug 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'JazzCore/ctrlp-cmatcher', {'do': './install.sh'}
-Plug 'scrooloose/nerdtree'
+Plug 'tpope/vim-vinegar'
 Plug 'haya14busa/incsearch.vim'
 
 " Languages & Syntax
@@ -32,7 +31,7 @@ Plug 'mxw/vim-jsx'
 Plug 'scrooloose/syntastic'
 Plug 'marijnh/tern_for_vim', {'do': 'npm install'}
 Plug 'mattn/emmet-vim'
-Plug 'iandoe/vim-osx-colorpicker', {'on': 'ColorHEX'}
+Plug 'iandoe/vim-osx-colorpicker'
 Plug 'fisadev/vim-isort'
 
 " Autocomplete & Snippets
@@ -46,11 +45,16 @@ Plug 'michaeljsmith/vim-indent-object'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'AndrewRadev/sideways.vim'
+Plug 'christoomey/vim-titlecase'
 call plug#end()
 
 " SETTINGS ------------------------
 
 " Style baby
+colorscheme onedark
+set background=dark
+set linespace=3
+set guifont=Operator\ Mono\ Book:h16
 
 " Basics
 set nocompatible
@@ -124,14 +128,15 @@ nnoremap <Leader>v :tabe ~/.vim/vimrc<CR>
 nnoremap <Leader>D :tabe ~/src/storybird/storybird/settings/_development.py<CR>
 nnoremap <Leader>b :CtrlPBuffer<CR>
 nnoremap <C-;> :CtrlPBuffer<CR>
-nnoremap <Leader>k :call ToggleNERDTreeFind()<CR>
+nnoremap <Leader>k :Explore<CR>
 nnoremap <Leader>c :ColorHEX<CR>
 
 " Find the word under the cursor project-wide
 nnoremap <Leader>f "zyiw:tabnew<CR>:Ag <C-r>z<CR>
 
 " Run Tests
-nmap <silent> <leader>z :w<CR>:TestNearest<CR>
+let test#python#djangotest#options = '-s'
+nmap <silent> <leader>z :w<CR>:TestFile<CR>
 nmap <silent> <leader>x :w<CR>:TestLast<CR>
 
 " Yank/Paste to system clipboard
@@ -182,6 +187,7 @@ command! OpenSession :source ~/.vim/sessions/default.vim
 
 " Save me from fat fingers
 command! W w
+command! Bd bd
 cabbrev Qall qall
 cabbrev ag Ag
 cabbrev tmove tabmove
@@ -212,7 +218,7 @@ autocmd BufNewFile,BufRead *.hbs set filetype=html.handlebars syntax=mustache
 autocmd BufReadPost,BufNewFile *_test.js set filetype=jasmine.javascript syntax=jasmine
 
 " Show a line at 80 and then 105 chars in Python/JS/HTML
-autocmd FileType python,html,htmldjango,javascript set colorcolumn=100 "105
+autocmd FileType python,html,htmldjango,javascript,javascript.jsx set colorcolumn=100 "105
 
 " Show insert mode cursor in iTerm2 and Tmux
 if exists('$TMUX')
@@ -248,7 +254,8 @@ let g:UltiSnipsSnippetsDir = $HOME . '/.vim/ultisnips'
 let g:UltiSnipsEditSplit = "vertical"
 
 " Syntastic
-let g:syntastic_javascript_checkers = ['jshint', 'jscs']
+let g:syntastic_html_checkers = []
+let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_python_flake8_args = "--max-line-length=105"
 let g:syntastic_aggregate_errors = 1
@@ -287,9 +294,6 @@ endif
 " Commentary
 autocmd FileType htmldjango set commentstring={#\ %s\ #}
 
-" NerdTree
-let NERDTreeIgnore = ['\.pyc$']
-
 " Incremental Search
 let g:incsearch#auto_nohlsearch = 1
 map /  <Plug>(incsearch-forward)
@@ -326,13 +330,4 @@ function! QuickfixFilenames()
     let buffer_numbers[quickfix_item['bufnr']] = bufname(quickfix_item['bufnr'])
   endfor
   return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
-endfunction
-
-" Toggle NerdTree
-function! ToggleNERDTreeFind()
-  if g:NERDTree.IsOpen()
-    execute ':NERDTreeClose'
-  else
-    execute ':NERDTreeFind'
-  endif
 endfunction
