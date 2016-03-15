@@ -27,7 +27,6 @@ Plug 'haya14busa/incsearch.vim'
 " Languages & Syntax
 Plug 'sheerun/vim-polyglot'
 Plug '~/.vim/django-custom'
-Plug 'mxw/vim-jsx'
 Plug 'scrooloose/syntastic'
 Plug 'marijnh/tern_for_vim', {'do': 'npm install'}
 Plug 'mattn/emmet-vim'
@@ -45,7 +44,6 @@ Plug 'michaeljsmith/vim-indent-object'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'AndrewRadev/sideways.vim'
-Plug 'christoomey/vim-titlecase'
 call plug#end()
 
 " SETTINGS ------------------------
@@ -136,7 +134,8 @@ nnoremap <Leader>f "zyiw:tabnew<CR>:Ag <C-r>z<CR>
 
 " Run Tests
 let test#python#djangotest#options = '-s'
-nmap <silent> <leader>z :w<CR>:TestFile<CR>
+let test#python#runner = 'djangonose'
+nmap <silent> <leader>z :w<CR>:TestNearest<CR>
 nmap <silent> <leader>x :w<CR>:TestLast<CR>
 
 " Yank/Paste to system clipboard
@@ -192,19 +191,8 @@ cabbrev Qall qall
 cabbrev ag Ag
 cabbrev tmove tabmove
 
-" Format JS file with ESFormatter
-command! JS :%! esformatter
-
 " Wrap buffer in an AMD module
 command! Module :normal ggiggidefine(function(require) {>GGo});gg
-
-" Coding Notes
-fun! CloseCodingNotes()
-  :bd
-endfun
-" On save, close the coding notes file.
-autocmd BufWritePost ~/Dropbox\ (Personal)/Library/coding-notes.txt call CloseCodingNotes()
-map <Leader>n :80vsp ~/Dropbox\ (Personal)/Library/coding-notes.txt<CR>
 
 " FORMATTING ---------------------------------------------
 
@@ -212,22 +200,13 @@ map <Leader>n :80vsp ~/Dropbox\ (Personal)/Library/coding-notes.txt<CR>
 autocmd BufNewFile,BufRead *.html set filetype=htmldjango
 
 " Handlebars Syntax
-autocmd BufNewFile,BufRead *.hbs set filetype=html.handlebars syntax=mustache
+" autocmd BufNewFile,BufRead *.hbs set filetype=html.handlebars syntax=mustache
 
 " Jasmine for tests
 autocmd BufReadPost,BufNewFile *_test.js set filetype=jasmine.javascript syntax=jasmine
 
 " Show a line at 80 and then 105 chars in Python/JS/HTML
-autocmd FileType python,html,htmldjango,javascript,javascript.jsx set colorcolumn=100 "105
-
-" Show insert mode cursor in iTerm2 and Tmux
-if exists('$TMUX')
-  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-else
-  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-endif
+autocmd FileType python,html,htmldjango,javascript,javascript.jsx set colorcolumn=100
 
 " PLUGINS ----------------------------------------
 
@@ -277,9 +256,6 @@ let g:airline_right_sep = ''
 let g:airline_section_b = ''
 let g:airline_section_y = ''
 let g:airline_section_z = ''
-
-" Colorpicker
-let g:colorpicker_app = 'iTerm.app'
 
 " CtrlP
 let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:20'
