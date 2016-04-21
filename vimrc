@@ -28,7 +28,6 @@ Plug 'haya14busa/incsearch.vim'
 Plug 'sheerun/vim-polyglot'
 Plug '~/.vim/django-custom'
 Plug 'scrooloose/syntastic'
-Plug 'marijnh/tern_for_vim', {'do': 'npm install'}
 Plug 'mattn/emmet-vim'
 Plug 'iandoe/vim-osx-colorpicker'
 Plug 'fisadev/vim-isort'
@@ -51,7 +50,7 @@ call plug#end()
 " Style baby
 colorscheme onedark
 set background=dark
-set linespace=3
+set linespace=5
 set guifont=Operator\ Mono\ Book:h16
 
 " Basics
@@ -141,8 +140,6 @@ nmap <silent> <leader>x :w<CR>:TestLast<CR>
 " Yank/Paste to system clipboard
 nnoremap <Leader>p "+p<CR>
 nnoremap <Leader>P "+P<CR>
-nnoremap <Leader>o o<Esc>"+p<CR>
-nnoremap <Leader>O O<Esc>"+p<CR>
 vnoremap <Leader>y "+y<CR>
 
 " Sideways
@@ -238,6 +235,14 @@ let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_python_flake8_args = "--max-line-length=105"
 let g:syntastic_aggregate_errors = 1
+let g:syntastic_error_symbol = '❌'
+let g:syntastic_style_error_symbol = '⁉️'
+let g:syntastic_warning_symbol = '⚠️'
+let g:syntastic_style_warning_symbol = '💩'
+highlight link SyntasticErrorSign SignColumn
+highlight link SyntasticWarningSign SignColumn
+highlight link SyntasticStyleErrorSign SignColumn
+highlight link SyntasticStyleWarningSign SignColumn
 
 " Emmet
 let g:user_emmet_expandabbr_key = '<c-e>'
@@ -282,28 +287,53 @@ map #  <Plug>(incsearch-nohl-#)
 map g* <Plug>(incsearch-nohl-g*)
 map g# <Plug>(incsearch-nohl-g#)
 
+" GOYO ------------------------
+
+nnoremap <Leader>g :Goyo<CR>
+
+function! s:goyo_enter()
+  set wrap
+  set linebreak
+  set spell
+endfunction
+
+function! s:goyo_leave()
+  set nowrap
+  set nolinebreak
+  set nospell
+endfunction
+
+autocmd! User GoyoEnter nested call <SID>goyo_enter()
+autocmd! User GoyoLeave nested call <SID>goyo_leave()
+
 " FUNCTIONS BABY ------------------------
 
 " Autoreload vimrc
 autocmd! bufwritepost ~/.vim/vimrc source %
 
 " Remove trailing whitespace
-fun! StripTrailingWhitespace()
+function! StripTrailingWhitespace()
   " Only strip if the b:noStripeWhitespace variable isn't set
   if exists('b:noStripWhitespace')
     return
   endif
   %s/\s\+$//e
-endfun
+endfunc
 autocmd BufWritePre * call StripTrailingWhitespace()
 autocmd FileType python let b:noStripWhitespace=1 " Don't strip whitespace for Python
+autocmd FileType markdown let b:noStripWhitespace=1 " Don't strip whitespace for Markdown
 
-" :Qargs - put quickfixlist into argslist.
-command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
-function! QuickfixFilenames()
-  let buffer_numbers = {}
-  for quickfix_item in getqflist()
-    let buffer_numbers[quickfix_item['bufnr']] = bufname(quickfix_item['bufnr'])
-  endfor
-  return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
-endfunction
+" Toggle Color Scheme
+let g:current_theme = 0
+function! ToggleColor()
+  if (g:current_theme)
+    set background=dark
+    colorscheme onedark
+    let g:current_theme = 0
+  else
+    set background=light
+    colorscheme PaperColor
+    let g:current_theme = 1
+  endif
+endfunc
+nnoremap <Leader>s :call ToggleColor()<CR>
