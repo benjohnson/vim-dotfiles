@@ -10,10 +10,8 @@ Plug 'airblade/vim-gitgutter'
 Plug 'bling/vim-airline'
 Plug 'janko-m/vim-test', {'on': ['TestNearest', 'TestFile', 'TestLast']}
 Plug 'junegunn/goyo.vim'
-Plug 'rizzatti/dash.vim'
 
 " Syntax Colors
-Plug 'hhff/SpacegrayEighties.vim'
 Plug 'geoffharcourt/one-dark.vim'
 Plug 'NLKNguyen/papercolor-theme'
 
@@ -43,6 +41,7 @@ Plug 'michaeljsmith/vim-indent-object'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'AndrewRadev/sideways.vim'
+Plug 'tommcdo/vim-exchange'
 call plug#end()
 
 " SETTINGS ------------------------
@@ -50,8 +49,6 @@ call plug#end()
 " Style baby
 colorscheme onedark
 set background=dark
-set linespace=5
-set guifont=Operator\ Mono\ Book:h16
 
 " Basics
 set nocompatible
@@ -92,7 +89,6 @@ set expandtab
 
 " Show tabs and trailing whitespace
 set list listchars=tab:»·,trail:·
-set list
 
 " Removes the delay when hitting esc in insert mode
 set noesckeys
@@ -124,7 +120,7 @@ nnoremap <Leader><Leader> :w<CR>
 nnoremap <Leader>v :tabe ~/.vim/vimrc<CR>
 nnoremap <Leader>D :tabe ~/src/storybird/storybird/settings/_development.py<CR>
 nnoremap <Leader>b :CtrlPBuffer<CR>
-nnoremap <C-;> :CtrlPBuffer<CR>
+nnoremap , :CtrlPBuffer<CR>
 nnoremap <Leader>k :Explore<CR>
 nnoremap <Leader>c :ColorHEX<CR>
 
@@ -132,7 +128,7 @@ nnoremap <Leader>c :ColorHEX<CR>
 nnoremap <Leader>f "zyiw:tabnew<CR>:Ag <C-r>z<CR>
 
 " Run Tests
-let test#python#djangotest#options = '-s'
+let test#python#djangotest#options = '--keepdb --nocapture'
 let test#python#runner = 'djangonose'
 nmap <silent> <leader>z :w<CR>:TestNearest<CR>
 nmap <silent> <leader>x :w<CR>:TestLast<CR>
@@ -147,22 +143,21 @@ nnoremap <Leader><Left> :SidewaysLeft<CR>
 nnoremap <Leader><Right> :SidewaysRight<CR>
 
 " Tab Commands
-nnoremap tl :tabnext<CR>
-nnoremap th :tabprev<CR>
-nnoremap tn :tabnew<CR>:CtrlP<CR>
-nnoremap tf :tabnew<CR>:Ag "
-nnoremap tk :tabfirst<CR>
-nnoremap tj :tablast<CR>
-nnoremap td :tabclose<CR>
-nnoremap to :tabonly<CR>
-nnoremap <Up> <NOP>
-nnoremap <Down> <NOP>
-nnoremap <Left> :tabprev<CR>
-nnoremap <Right> :tabnext<CR>
+" nnoremap tl :tabnext<CR>
+" nnoremap th :tabprev<CR>
+" nnoremap tn :tabnew<CR>:CtrlP<CR>
+" nnoremap tf :tabnew<CR>:Ag "
+" nnoremap tk :tabfirst<CR>
+" nnoremap tj :tablast<CR>
+" nnoremap td :tabclose<CR>
+" nnoremap to :tabonly<CR>
 
 " Normal mode with jk
 inoremap jk <ESC>
 inoremap kj <ESC>
+
+" Simplified linewise autocomplete
+inoremap <C-l> <C-x><C-l>
 
 " Repeat dot command in visual mode
 xnoremap . :normal .<CR>
@@ -197,7 +192,7 @@ command! Module :normal ggiggidefine(function(require) {>GGo});gg
 autocmd BufNewFile,BufRead *.html set filetype=htmldjango
 
 " Handlebars Syntax
-" autocmd BufNewFile,BufRead *.hbs set filetype=html.handlebars syntax=mustache
+autocmd BufNewFile,BufRead *.hbs set filetype=html.handlebars syntax=mustache
 
 " Jasmine for tests
 autocmd BufReadPost,BufNewFile *_test.js set filetype=jasmine.javascript syntax=jasmine
@@ -208,7 +203,7 @@ autocmd FileType python,html,htmldjango,javascript,javascript.jsx set colorcolum
 " PLUGINS ----------------------------------------
 
 " Syntax
-let g:jsx_ext_required = 0
+let g:jsx_ext_required = 1
 let python_highlight_all = 1
 
 " YouCompleteMe and UltiSnips compatibility, with the help of supertab
@@ -221,6 +216,7 @@ let g:ycm_key_list_select_completion = ['<C-j>', '<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-k>', '<C-p>', '<Up>']
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_complete_in_comments_and_strings = 0
 
 " Utilsnips
 let g:UltiSnipsExpandTrigger = '<tab>'

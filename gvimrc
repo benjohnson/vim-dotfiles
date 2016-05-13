@@ -1,8 +1,6 @@
-colorscheme onedark
 set background=dark
-" colorscheme PaperColor
-" set background=light
-
-set linespace=2
+colorscheme onedark
+set linespace=5
+set guifont=Operator\ Mono\ Book:h16
 set guioptions-=L
 set guioptions-=r
