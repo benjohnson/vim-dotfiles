@@ -46,10 +46,6 @@ call plug#end()
 
 " SETTINGS ------------------------
 
-" Style baby
-colorscheme onedark
-set background=dark
-
 " Basics
 set nocompatible
 filetype off
@@ -128,7 +124,7 @@ nnoremap <Leader>c :ColorHEX<CR>
 nnoremap <Leader>f "zyiw:tabnew<CR>:Ag <C-r>z<CR>
 
 " Run Tests
-let test#python#djangotest#options = '--keepdb --nocapture'
+let test#python#djangotest#options = '--keepdb --nocapture --nologcapture'
 let test#python#runner = 'djangonose'
 nmap <silent> <leader>z :w<CR>:TestNearest<CR>
 nmap <silent> <leader>x :w<CR>:TestLast<CR>
@@ -143,14 +139,14 @@ nnoremap <Leader><Left> :SidewaysLeft<CR>
 nnoremap <Leader><Right> :SidewaysRight<CR>
 
 " Tab Commands
-" nnoremap tl :tabnext<CR>
-" nnoremap th :tabprev<CR>
-" nnoremap tn :tabnew<CR>:CtrlP<CR>
-" nnoremap tf :tabnew<CR>:Ag "
-" nnoremap tk :tabfirst<CR>
-" nnoremap tj :tablast<CR>
-" nnoremap td :tabclose<CR>
-" nnoremap to :tabonly<CR>
+nnoremap tl :tabnext<CR>
+nnoremap th :tabprev<CR>
+nnoremap tn :tabnew<CR>:CtrlP<CR>
+nnoremap tf :tabnew<CR>:Ag "
+nnoremap tk :tabfirst<CR>
+nnoremap tj :tablast<CR>
+nnoremap td :tabclose<CR>
+nnoremap to :tabonly<CR>
 
 " Normal mode with jk
 inoremap jk <ESC>
