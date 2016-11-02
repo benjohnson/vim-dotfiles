@@ -17,6 +17,7 @@ Plug 'NLKNguyen/papercolor-theme'
 
 " Search & File Management
 Plug 'rking/ag.vim', {'on': 'Ag'}
+Plug 'wincent/ferret'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'JazzCore/ctrlp-cmatcher', {'do': './install.sh'}
 Plug 'tpope/vim-vinegar'
@@ -29,11 +30,12 @@ Plug 'scrooloose/syntastic'
 Plug 'mattn/emmet-vim'
 Plug 'iandoe/vim-osx-colorpicker'
 Plug 'fisadev/vim-isort'
+Plug 'metakirby5/codi.vim'
 
 " Autocomplete & Snippets
 Plug 'ervandew/supertab'
 Plug 'Valloric/YouCompleteMe'
-Plug 'SirVer/ultisnips'
+" Plug 'SirVer/ultisnips'
 
 " Motions
 Plug 'AndrewRadev/splitjoin.vim'
@@ -80,7 +82,7 @@ set gdefault     " Always do global substitutions - screw /g
 
 " Indentation
 set tabstop=2
-set shiftwidth=2
+set shiftwidth=4
 set expandtab
 
 " Show tabs and trailing whitespace
@@ -114,7 +116,6 @@ let mapleader = "\<Space>"
 
 nnoremap <Leader><Leader> :w<CR>
 nnoremap <Leader>v :tabe ~/.vim/vimrc<CR>
-nnoremap <Leader>D :tabe ~/src/storybird/storybird/settings/_development.py<CR>
 nnoremap <Leader>b :CtrlPBuffer<CR>
 nnoremap , :CtrlPBuffer<CR>
 nnoremap <Leader>k :Explore<CR>
@@ -126,8 +127,9 @@ nnoremap <Leader>f "zyiw:tabnew<CR>:Ag <C-r>z<CR>
 " Run Tests
 let test#python#djangotest#options = '--keepdb --nocapture --nologcapture'
 let test#python#runner = 'djangonose'
-nmap <silent> <leader>z :w<CR>:TestNearest<CR>
-nmap <silent> <leader>x :w<CR>:TestLast<CR>
+" nmap <silent> <leader>z :w<CR>:TestNearest<CR>
+nmap <Leader>z :w<CR>:!./bin/test.sh<CR>
+nmap <silent> <Leader>x :w<CR>:TestLast<CR>
 
 " Yank/Paste to system clipboard
 nnoremap <Leader>p "+p<CR>
@@ -184,8 +186,10 @@ command! Module :normal ggiggidefine(function(require) {>GGo});gg
 
 " FORMATTING ---------------------------------------------
 
+let g:javascript_plugin_jsdoc = 1
+
 " Django Syntax for Html Templates
-autocmd BufNewFile,BufRead *.html set filetype=htmldjango
+" autocmd BufNewFile,BufRead *.html set filetype=htmldjango
 
 " Handlebars Syntax
 autocmd BufNewFile,BufRead *.hbs set filetype=html.handlebars syntax=mustache
@@ -193,13 +197,13 @@ autocmd BufNewFile,BufRead *.hbs set filetype=html.handlebars syntax=mustache
 " Jasmine for tests
 autocmd BufReadPost,BufNewFile *_test.js set filetype=jasmine.javascript syntax=jasmine
 
-" Show a line at 80 and then 105 chars in Python/JS/HTML
-autocmd FileType python,html,htmldjango,javascript,javascript.jsx set colorcolumn=100
+" Show a line at 80 and then 105 chars in JS/HTML
+autocmd FileType html,htmldjango,javascript,javascript.jsx set colorcolumn=80
 
 " PLUGINS ----------------------------------------
 
 " Syntax
-let g:jsx_ext_required = 1
+let g:jsx_ext_required = 0
 let python_highlight_all = 1
 
 " YouCompleteMe and UltiSnips compatibility, with the help of supertab
@@ -224,8 +228,6 @@ let g:UltiSnipsEditSplit = "vertical"
 " Syntastic
 let g:syntastic_html_checkers = []
 let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_python_flake8_args = "--max-line-length=105"
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_error_symbol = '❌'
 let g:syntastic_style_error_symbol = '⁉️'
