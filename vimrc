@@ -8,16 +8,14 @@ Plug 'tpope/vim-repeat'
 Plug 'octref/RootIgnore'
 Plug 'airblade/vim-gitgutter'
 Plug 'bling/vim-airline'
-Plug 'janko-m/vim-test', {'on': ['TestNearest', 'TestFile', 'TestLast']}
-Plug 'junegunn/goyo.vim'
 
 " Syntax Colors
-Plug 'geoffharcourt/one-dark.vim'
+Plug 'joshdick/onedark.vim'
 Plug 'NLKNguyen/papercolor-theme'
+Plug 'danilo-augusto/vim-afterglow'
 
 " Search & File Management
 Plug 'rking/ag.vim', {'on': 'Ag'}
-Plug 'wincent/ferret'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'JazzCore/ctrlp-cmatcher', {'do': './install.sh'}
 Plug 'tpope/vim-vinegar'
@@ -25,25 +23,20 @@ Plug 'haya14busa/incsearch.vim'
 
 " Languages & Syntax
 Plug 'sheerun/vim-polyglot'
-Plug '~/.vim/django-custom'
-Plug 'scrooloose/syntastic'
+Plug 'posva/vim-vue'
+Plug 'w0rp/ale'
 Plug 'mattn/emmet-vim'
 Plug 'iandoe/vim-osx-colorpicker'
-Plug 'fisadev/vim-isort'
-Plug 'metakirby5/codi.vim'
 
 " Autocomplete & Snippets
-Plug 'ervandew/supertab'
 Plug 'Valloric/YouCompleteMe'
-" Plug 'SirVer/ultisnips'
 
 " Motions
-Plug 'AndrewRadev/splitjoin.vim'
-Plug 'michaeljsmith/vim-indent-object'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
+Plug 'AndrewRadev/splitjoin.vim'
 Plug 'AndrewRadev/sideways.vim'
-Plug 'tommcdo/vim-exchange'
+Plug 'michaeljsmith/vim-indent-object'
 call plug#end()
 
 " SETTINGS ------------------------
@@ -63,7 +56,7 @@ set encoding=utf-8              " Set default encoding to UTF-8
 set autowrite                   " Automatically save before :next, :make etc.
 set autoread                    " Automatically reread changed files without asking me anything
 set shiftround                  " When at 3 spaces and I hit >>, go to 4, not 5.
-set nofoldenable                " Say no to code folding...
+" set nofoldenable                " Say no to code folding...
 set nohidden                    " Hide instead of close files when opening a new file while there are unsaved changes
 set nowrap                      " Don't word wrap
 set cursorline                  " Hightlight current line
@@ -72,6 +65,7 @@ set wildmenu                    " Better tab completion for Vim commands
 set splitbelow                  " Split horizontal windows below to the current windows
 set splitright                  " Split vertical windows right to the current windows
 set nomore                      " Don't display --MORE--
+set nojoinspaces                " Don't use two spaces after a period.
 
 " Search
 set incsearch    " Shows the match while typing
@@ -89,7 +83,7 @@ set expandtab
 set list listchars=tab:»·,trail:·
 
 " Removes the delay when hitting esc in insert mode
-set noesckeys
+" set noesckeys
 set timeoutlen=1000
 set ttimeoutlen=0
 
@@ -110,6 +104,28 @@ set backup
 " Disable swap files. Live on the edge.
 set noswapfile
 
+" Incremental substituion previews in NeoVim
+if has("nvim")
+    set inccommand=nosplit
+endif
+
+if has("nvim")
+  " Make escape work in the Neovim terminal.
+  tnoremap <Esc> <C-\><C-n>
+
+  " Make navigation into and out of Neovim terminal splits nicer.
+  tnoremap <C-h> <C-\><C-N><C-w>h
+  tnoremap <C-j> <C-\><C-N><C-w>j
+  tnoremap <C-k> <C-\><C-N><C-w>k
+  tnoremap <C-l> <C-\><C-N><C-w>l
+
+  " Relative numbering when in normal mode.
+  autocmd TermOpen * setlocal conceallevel=0 colorcolumn=0 relativenumber
+
+  " Prefer Neovim terminal insert mode to normal mode.
+  " autocmd BufEnter term://* startinsert
+endif
+
 " LEADER/PERSONAL COMMANDS ------------------------
 
 let mapleader = "\<Space>"
@@ -117,19 +133,22 @@ let mapleader = "\<Space>"
 nnoremap <Leader><Leader> :w<CR>
 nnoremap <Leader>v :tabe ~/.vim/vimrc<CR>
 nnoremap <Leader>b :CtrlPBuffer<CR>
-nnoremap , :CtrlPBuffer<CR>
 nnoremap <Leader>k :Explore<CR>
 nnoremap <Leader>c :ColorHEX<CR>
 
-" Find the word under the cursor project-wide
-nnoremap <Leader>f "zyiw:tabnew<CR>:Ag <C-r>z<CR>
+" Snippets
+nnoremap ,log iconsole.log()<ESC>i
+nnoremap ,wlog Iconsole.log(<ESC>A)<ESC>
+
+" Use prettier to format.
+nnoremap <Leader>f :w<CR>ma:%! prettier --stdin --single-quote --trailing-comma es5 --print-width 80 --tab-width 4<CR>'a:w<CR>:delmarks a<CR>
 
 " Run Tests
-let test#python#djangotest#options = '--keepdb --nocapture --nologcapture'
-let test#python#runner = 'djangonose'
+" let test#python#djangotest#options = '--keepdb --nocapture --nologcapture'
+" let test#python#runner = 'djangonose'
 " nmap <silent> <leader>z :w<CR>:TestNearest<CR>
-nmap <Leader>z :w<CR>:!./bin/test.sh<CR>
-nmap <silent> <Leader>x :w<CR>:TestLast<CR>
+nmap <Leader>z :w<CR>:!source ~/.bash_profile && nvm use && npm test<CR>
+" nmap <silent> <Leader>x :w<CR>:TestLast<CR>
 
 " Yank/Paste to system clipboard
 nnoremap <Leader>p "+p<CR>
@@ -178,6 +197,7 @@ command! OpenSession :source ~/.vim/sessions/default.vim
 command! W w
 command! Bd bd
 cabbrev Qall qall
+cabbrev Wall wall
 cabbrev ag Ag
 cabbrev tmove tabmove
 
@@ -192,6 +212,9 @@ let g:javascript_plugin_jsdoc = 1
 " autocmd BufNewFile,BufRead *.html set filetype=htmldjango
 
 " Handlebars Syntax
+let g:polyglot_disabled = ['html5']
+let g:mustache_operators = 0
+autocmd BufNewFile,BufRead *.html set filetype=html.handlebars syntax=mustache
 autocmd BufNewFile,BufRead *.hbs set filetype=html.handlebars syntax=mustache
 
 " Jasmine for tests
@@ -206,37 +229,27 @@ autocmd FileType html,htmldjango,javascript,javascript.jsx set colorcolumn=80
 let g:jsx_ext_required = 0
 let python_highlight_all = 1
 
-" YouCompleteMe and UltiSnips compatibility, with the help of supertab
-" http://stackoverflow.com/a/22253548/1626737
-let g:SuperTabDefaultCompletionType = '<C-n>'
-let g:SuperTabCrMapping = 0
-
 " YouCompleteMe
-let g:ycm_key_list_select_completion = ['<C-j>', '<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-k>', '<C-p>', '<Up>']
+" let g:ycm_key_list_select_completion = ['<C-j>', '<C-n>', '<Down>']
+" let g:ycm_key_list_previous_completion = ['<C-k>', '<C-p>', '<Up>']
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_complete_in_comments_and_strings = 0
 
-" Utilsnips
-let g:UltiSnipsExpandTrigger = '<tab>'
-let g:UltiSnipsJumpForwardTrigger = '<tab>'
-let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
-let g:UltiSnipsSnippetsDir = $HOME . '/.vim/ultisnips'
-let g:UltiSnipsEditSplit = "vertical"
-
 " Syntastic
-let g:syntastic_html_checkers = []
-let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_aggregate_errors = 1
-let g:syntastic_error_symbol = '❌'
-let g:syntastic_style_error_symbol = '⁉️'
-let g:syntastic_warning_symbol = '⚠️'
-let g:syntastic_style_warning_symbol = '💩'
-highlight link SyntasticErrorSign SignColumn
-highlight link SyntasticWarningSign SignColumn
-highlight link SyntasticStyleErrorSign SignColumn
-highlight link SyntasticStyleWarningSign SignColumn
+" let g:syntastic_html_checkers = []
+" let g:syntastic_javascript_checkers = ['eslint']
+" let g:syntastic_aggregate_errors = 1
+" let g:syntastic_error_symbol = '❌'
+" let g:syntastic_style_error_symbol = '⁉️'
+" let g:syntastic_warning_symbol = '⚠️'
+" let g:syntastic_style_warning_symbol = '💩'
+" highlight link SyntasticErrorSign SignColumn
+" highlight link SyntasticWarningSign SignColumn
+" highlight link SyntasticStyleErrorSign SignColumn
+" highlight link SyntasticStyleWarningSign SignColumn
+let g:ale_set_loclist = 0
+let g:ale_lint_on_text_changed = 'never'
 
 " Emmet
 let g:user_emmet_expandabbr_key = '<c-e>'
@@ -268,6 +281,7 @@ endif
 
 " Commentary
 autocmd FileType htmldjango set commentstring={#\ %s\ #}
+autocmd FileType vue set commentstring=//\ %s
 
 " Incremental Search
 let g:incsearch#auto_nohlsearch = 1
@@ -330,4 +344,4 @@ function! ToggleColor()
     let g:current_theme = 1
   endif
 endfunc
-nnoremap <Leader>s :call ToggleColor()<CR>
+nnoremap <Leader>i :call ToggleColor()<CR>
