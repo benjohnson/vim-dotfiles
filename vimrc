@@ -5,11 +5,16 @@ Plug 'airblade/vim-gitgutter'
 Plug 'bling/vim-airline'
 Plug 'rking/ag.vim', {'on': 'Ag'}
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'JazzCore/ctrlp-cmatcher', {'do': './install.sh'}
+Plug 'nixprime/cpsm'
 Plug 'sheerun/vim-polyglot'
+Plug 'lepture/vim-jinja'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
 Plug 'michaeljsmith/vim-indent-object'
+Plug 'w0rp/ale'
+Plug 'AndrewRadev/sideways.vim'
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   let g:deoplete#enable_at_startup = 1
@@ -41,10 +46,16 @@ set splitbelow                  " Split horizontal windows below to the current 
 set splitright                  " Split vertical windows right to the current windows
 set nomore                      " Don't display --MORE--
 set nojoinspaces                " Don't use two spaces after a period.
+set ignorecase
+set smartcase                   " If it's a capital, search case sensitive.
 
 set expandtab " On tab, insert spaces.
 set tabstop=2 " Existing tab displayed as spaces.
 set shiftwidth=2 " When indenting with > use spaces.
+
+augroup ProjectSetup
+  au BufRead,BufEnter /Users/benjohnson/src/repos/docker/prodigy-graphql/* set shiftwidth=4
+augroup END
 
 " Show tabs and trailing whitespace
 set list listchars=tab:»·,trail:·
@@ -79,7 +90,8 @@ nnoremap <Leader><Leader> :w<CR>
 nnoremap <Leader>v :tabe ~/.vim/vimrc<CR>
 
 " Use prettier to format.
-nnoremap <Leader>f :w<CR>ma:%! prettier --stdin --single-quote --trailing-comma es5 --print-width 80 --tab-width 4<CR>'a:w<CR>:delmarks a<CR>
+" nnoremap <Leader>f :w<CR>ma:%! prettier --stdin --single-quote --trailing-comma es5 --print-width 80 --tab-width 2<CR>'a:w<CR>:delmarks a<CR>
+nnoremap <Leader>f :ALEFix prettier<CR>:w<CR>
 
 " Yank/Paste to system clipboard
 nnoremap <Leader>p "+p<CR>
@@ -95,6 +107,12 @@ nnoremap tk :tabfirst<CR>
 nnoremap tj :tablast<CR>
 nnoremap td :tabclose<CR>
 nnoremap to :tabonly<CR>
+
+" CtrlP
+nnoremap <Leader>b :CtrlPBuffer<CR>
+
+nnoremap <Leader><Left> :SidewaysLeft<CR>
+nnoremap <Leader><Right> :SidewaysRight<CR>
 
 " Repeat dot command in visual mode
 xnoremap . :normal .<CR>
@@ -121,15 +139,21 @@ cabbrev Wall wal
 cabbrev ag Ag
 cabbrev tmove tabmove
 
+" Open file in finder
+command! Finder :!open `dirname %`
+
 " CtrlP
 let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:20'
 let g:ctrlp_switch_buffer = 'et'
 let g:ctrlp_max_files = 0
 let g:ctrlp_use_caching = 0
-let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
+let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
 if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
+
+" deoplete tab-complete
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
 " Autoreload vimrc
 autocmd! bufwritepost ~/.vim/vimrc source %
@@ -145,3 +169,17 @@ endfunc
 autocmd BufWritePre * call StripTrailingWhitespace()
 autocmd FileType python let b:noStripWhitespace=1 " Don't strip whitespace for Python
 autocmd FileType markdown let b:noStripWhitespace=1 " Don't strip whitespace for Markdown
+
+let g:polyglot_disabled = ['yaml']
+
+let g:deoplete#file#enable_buffer_path = 0
+
+let b:ale_fixers = ['prettier', 'eslint']
+" let g:ale_typescript_tsserver_use_global = 1
+let g:ale_completion_enabled = 1
+let g:ale_linters_ignore = {}
+
+" Exit terminal mode with Esc
+tnoremap <Esc> <C-\><C-n>
+
+au BufNewFile,BufRead *.njk set ft=jinja
