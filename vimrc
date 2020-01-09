@@ -1,6 +1,10 @@
 call plug#begin('~/.vim/plugged')
-Plug 'octref/RootIgnore'
 Plug 'joshdick/onedark.vim'
+Plug 'chriskempson/base16-vim'
+Plug 'ayu-theme/ayu-vim'
+Plug 'easysid/mod8.vim'
+
+Plug 'octref/RootIgnore'
 Plug 'airblade/vim-gitgutter'
 Plug 'bling/vim-airline'
 Plug 'rking/ag.vim', {'on': 'Ag'}
@@ -15,6 +19,13 @@ Plug 'tpope/vim-repeat'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'w0rp/ale'
 Plug 'AndrewRadev/sideways.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'AndrewRadev/splitjoin.vim'
+
+Plug 'aklt/plantuml-syntax'
+Plug 'tyru/open-browser.vim'
+Plug 'weirongxu/plantuml-previewer.vim'
+
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   let g:deoplete#enable_at_startup = 1
@@ -24,8 +35,18 @@ call plug#end()
 set nocompatible
 filetype off
 syntax on
-colorscheme onedark
+
 set termguicolors
+" let ayucolor="dark"
+" colorscheme ayu
+" colorscheme base16-eighties
+" colorscheme onedark
+colorscheme mod8
+
+" Fix a temporary problem with netrw clobbering yank
+" https://github.com/vim/vim/commit/91359014b359cf816bf943fe2c7d492996263def
+let g:netrw_banner = 1
+
 set shell=/bin/bash             " Make stuff work nice with Fish
 set backspace=indent,eol,start  " Makes backspace key act like a backspace key
 set noerrorbells                " No bells when error messages are shown.
@@ -52,10 +73,6 @@ set smartcase                   " If it's a capital, search case sensitive.
 set expandtab " On tab, insert spaces.
 set tabstop=2 " Existing tab displayed as spaces.
 set shiftwidth=2 " When indenting with > use spaces.
-
-augroup ProjectSetup
-  au BufRead,BufEnter /Users/benjohnson/src/repos/docker/prodigy-graphql/* set shiftwidth=4
-augroup END
 
 " Show tabs and trailing whitespace
 set list listchars=tab:»·,trail:·
@@ -127,6 +144,9 @@ nnoremap <C-H> <C-W><C-H>
 nmap j gj
 nmap k gk
 
+" <Ctrl-l> redraws the screen and removes any search highlighting.
+" nnoremap <silent><C-l> :nohl<CR><C-l>
+
 " Open and save sessions
 command! SaveSession :mks! ~/.vim/sessions/default.vim
 command! OpenSession :source ~/.vim/sessions/default.vim
@@ -175,7 +195,7 @@ let g:polyglot_disabled = ['yaml']
 let g:deoplete#file#enable_buffer_path = 0
 
 let b:ale_fixers = ['prettier', 'eslint']
-" let g:ale_typescript_tsserver_use_global = 1
+let g:ale_typescript_tsserver_use_global = 1
 let g:ale_completion_enabled = 1
 let g:ale_linters_ignore = {}
 
@@ -183,3 +203,14 @@ let g:ale_linters_ignore = {}
 tnoremap <Esc> <C-\><C-n>
 
 au BufNewFile,BufRead *.njk set ft=jinja
+
+augroup netrw_mapping
+    autocmd!
+    autocmd filetype netrw call NetrwMapping()
+augroup END
+
+function! NetrwMapping()
+    noremap <buffer> tl :tabnext<CR>
+    noremap <buffer> th :tabprev<CR>
+    noremap <buffer> td :tabclose <CR>
+endfunction
