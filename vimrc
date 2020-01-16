@@ -1,35 +1,37 @@
 call plug#begin('~/.vim/plugged')
+" Color schemes
+Plug 'easysid/mod8.vim'
 Plug 'joshdick/onedark.vim'
 Plug 'chriskempson/base16-vim'
 Plug 'ayu-theme/ayu-vim'
-Plug 'easysid/mod8.vim'
 
+" Plug 'ycm-core/YouCompleteMe'
+
+" Everything else
 Plug 'octref/RootIgnore'
 Plug 'airblade/vim-gitgutter'
 Plug 'bling/vim-airline'
-Plug 'rking/ag.vim', {'on': 'Ag'}
+Plug 'rking/ag.vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'nixprime/cpsm'
 Plug 'sheerun/vim-polyglot'
-Plug 'lepture/vim-jinja'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'michaeljsmith/vim-indent-object'
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 Plug 'AndrewRadev/sideways.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'AndrewRadev/splitjoin.vim'
+Plug 'markonm/traces.vim'
 
+Plug 'lepture/vim-jinja'
+
+" PlantUML support
 Plug 'aklt/plantuml-syntax'
 Plug 'tyru/open-browser.vim'
 Plug 'weirongxu/plantuml-previewer.vim'
-
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  let g:deoplete#enable_at_startup = 1
-endif
 call plug#end()
 
 set nocompatible
@@ -70,6 +72,9 @@ set nojoinspaces                " Don't use two spaces after a period.
 set ignorecase
 set smartcase                   " If it's a capital, search case sensitive.
 
+" Maybe?
+set lazyredraw
+
 set expandtab " On tab, insert spaces.
 set tabstop=2 " Existing tab displayed as spaces.
 set shiftwidth=2 " When indenting with > use spaces.
@@ -94,9 +99,10 @@ set backup
 " Disable swap files. Live on the edge.
 set noswapfile
 
-" Incremental substituion previews in NeoVim
-if has("nvim")
-    set inccommand=nosplit
+" Change iTerm cursor
+if $TERM_PROGRAM =~ "iTerm"
+    let &t_SI = "\<Esc>]50;CursorShape=1\x7" " Vertical bar in insert mode
+    let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
 endif
 
 " LEADER/PERSONAL COMMANDS ------------------------
