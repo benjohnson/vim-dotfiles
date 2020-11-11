@@ -1,16 +1,17 @@
+let g:polyglot_disabled = ['yaml']
 call plug#begin('~/.vim/plugged')
-" Color schemes
+" Color Schemes
 Plug 'easysid/mod8.vim'
 Plug 'joshdick/onedark.vim'
 Plug 'chriskempson/base16-vim'
 Plug 'ayu-theme/ayu-vim'
 
-" Plug 'ycm-core/YouCompleteMe'
-
-" Everything else
+" Everything Else
+Plug 'ycm-core/YouCompleteMe'
 Plug 'octref/RootIgnore'
 Plug 'airblade/vim-gitgutter'
 Plug 'bling/vim-airline'
+Plug 'adelarsq/vim-matchit'
 Plug 'rking/ag.vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'nixprime/cpsm'
@@ -22,32 +23,27 @@ Plug 'tpope/vim-repeat'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'dense-analysis/ale'
 Plug 'AndrewRadev/sideways.vim'
-Plug 'tpope/vim-fugitive'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'markonm/traces.vim'
 
-Plug 'lepture/vim-jinja'
-
-" PlantUML support
+" PlantUML Support
 Plug 'aklt/plantuml-syntax'
 Plug 'tyru/open-browser.vim'
 Plug 'weirongxu/plantuml-previewer.vim'
+
 call plug#end()
 
 set nocompatible
 filetype off
 syntax on
 
+" Color Schemes
 set termguicolors
-" let ayucolor="dark"
-" colorscheme ayu
-" colorscheme base16-eighties
+let ayucolor="dark"
+colorscheme ayu
+" colorscheme base16-gruvbox-dark-pale
 " colorscheme onedark
-colorscheme mod8
-
-" Fix a temporary problem with netrw clobbering yank
-" https://github.com/vim/vim/commit/91359014b359cf816bf943fe2c7d492996263def
-let g:netrw_banner = 1
+" colorscheme mod8
 
 set shell=/bin/bash             " Make stuff work nice with Fish
 set backspace=indent,eol,start  " Makes backspace key act like a backspace key
@@ -71,9 +67,7 @@ set nomore                      " Don't display --MORE--
 set nojoinspaces                " Don't use two spaces after a period.
 set ignorecase
 set smartcase                   " If it's a capital, search case sensitive.
-
-" Maybe?
-set lazyredraw
+set hlsearch
 
 set expandtab " On tab, insert spaces.
 set tabstop=2 " Existing tab displayed as spaces.
@@ -137,6 +131,10 @@ nnoremap <Leader>b :CtrlPBuffer<CR>
 nnoremap <Leader><Left> :SidewaysLeft<CR>
 nnoremap <Leader><Right> :SidewaysRight<CR>
 
+" Search
+nnoremap <Leader>s :Ag<Space>
+nnoremap <Leader>S :Ag<Space><C-r><C-w><CR>
+
 " Repeat dot command in visual mode
 xnoremap . :normal .<CR>
 
@@ -161,6 +159,7 @@ command! OpenSession :source ~/.vim/sessions/default.vim
 command! W w
 command! Bd bd
 cabbrev Qall qall
+cabbrev Qal qall
 cabbrev Wall wal
 cabbrev ag Ag
 cabbrev tmove tabmove
@@ -195,8 +194,7 @@ endfunc
 autocmd BufWritePre * call StripTrailingWhitespace()
 autocmd FileType python let b:noStripWhitespace=1 " Don't strip whitespace for Python
 autocmd FileType markdown let b:noStripWhitespace=1 " Don't strip whitespace for Markdown
-
-let g:polyglot_disabled = ['yaml']
+autocmd FileType php let b:noStripWhitespace=1 " Don't strip whitespace for Markdown
 
 let g:deoplete#file#enable_buffer_path = 0
 
