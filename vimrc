@@ -1,10 +1,12 @@
 let g:polyglot_disabled = ['yaml']
 call plug#begin('~/.vim/plugged')
+
 " Color Schemes
 Plug 'easysid/mod8.vim'
 Plug 'joshdick/onedark.vim'
 Plug 'chriskempson/base16-vim'
 Plug 'ayu-theme/ayu-vim'
+Plug 'rakr/vim-one'
 
 " Everything Else
 Plug 'ycm-core/YouCompleteMe'
@@ -25,12 +27,6 @@ Plug 'dense-analysis/ale'
 Plug 'AndrewRadev/sideways.vim'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'markonm/traces.vim'
-
-" PlantUML Support
-Plug 'aklt/plantuml-syntax'
-Plug 'tyru/open-browser.vim'
-Plug 'weirongxu/plantuml-previewer.vim'
-
 call plug#end()
 
 set nocompatible
@@ -39,11 +35,8 @@ syntax on
 
 " Color Schemes
 set termguicolors
-let ayucolor="dark"
-colorscheme ayu
-" colorscheme base16-gruvbox-dark-pale
-" colorscheme onedark
-" colorscheme mod8
+colorscheme onedark
+let g:airline_theme='onedark'
 
 set shell=/bin/bash             " Make stuff work nice with Fish
 set backspace=indent,eol,start  " Makes backspace key act like a backspace key
@@ -177,9 +170,6 @@ if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
 
-" deoplete tab-complete
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-
 " Autoreload vimrc
 autocmd! bufwritepost ~/.vim/vimrc source %
 
@@ -201,13 +191,14 @@ let g:deoplete#file#enable_buffer_path = 0
 let b:ale_fixers = ['prettier', 'eslint']
 let g:ale_typescript_tsserver_use_global = 1
 let g:ale_completion_enabled = 1
-let g:ale_linters_ignore = {}
 
 " Exit terminal mode with Esc
 tnoremap <Esc> <C-\><C-n>
 
+" For nunjucks, use jinja
 au BufNewFile,BufRead *.njk set ft=jinja
 
+" Allow switching between tabs in NetRw
 augroup netrw_mapping
     autocmd!
     autocmd filetype netrw call NetrwMapping()
